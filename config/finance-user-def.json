@@ -1,0 +1,10 @@
+{
+  "LastName": "finance-bot",
+  "Alias": "fin-user",
+  "TimeZoneSidKey": "America/Denver",
+  "LocaleSidKey": "en_US",
+  "EmailEncodingKey": "UTF-8",
+  "LanguageLocaleKey": "en_US",
+  "profileName": "finance",
+  "generatePassword": true
+}
