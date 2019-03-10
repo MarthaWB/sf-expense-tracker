@@ -59,6 +59,6 @@
     </nameField>
     <pluralLabel>Expense Reports</pluralLabel>
     <searchLayouts/>
-    <sharingModel>ReadWrite</sharingModel>
+    <sharingModel>Private</sharingModel>
     <visibility>Public</visibility>
 </CustomObject>

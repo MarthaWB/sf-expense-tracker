@@ -1,5 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Profile xmlns="http://soap.sforce.com/2006/04/metadata">
+    <applicationVisibilities>
+        <application>Expense_Tracker</application>
+        <default>false</default>
+        <visible>false</visible>
+    </applicationVisibilities>
     <custom>true</custom>
     <fieldPermissions>
         <editable>true</editable>
@@ -17,9 +22,9 @@
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
-        <editable>true</editable>
+        <editable>false</editable>
         <field>Expense_Report__c.Amount__c</field>
-        <readable>true</readable>
+        <readable>false</readable>
     </fieldPermissions>
     <layoutAssignments>
         <layout>Category__c-Category Layout</layout>
@@ -30,6 +35,10 @@
     <layoutAssignments>
         <layout>Expense_Report__c-Expense Report Layout</layout>
     </layoutAssignments>
+    <tabVisibilities>
+        <tab>Category__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
     <tabVisibilities>
         <tab>Expense_Report__c</tab>
         <visibility>DefaultOn</visibility>
