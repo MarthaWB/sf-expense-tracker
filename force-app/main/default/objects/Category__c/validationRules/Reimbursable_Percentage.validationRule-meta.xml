@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ValidationRule xmlns="http://soap.sforce.com/2006/04/metadata">
+    <fullName>Reimbursable_Percentage</fullName>
+    <active>true</active>
+    <description>The reimbursable percentage of an expense in any expense category must be a positive or zero and cannot exceed 100%.</description>
+    <errorConditionFormula>OR(
+   Reimbursable_Percentage__c  &lt; 0,
+   Reimbursable_Percentage__c  &gt; 100
+)</errorConditionFormula>
+    <errorDisplayField>Reimbursable_Percentage__c</errorDisplayField>
+    <errorMessage>The reimbursable percentage has to be a number between 0 and 100.</errorMessage>
+</ValidationRule>

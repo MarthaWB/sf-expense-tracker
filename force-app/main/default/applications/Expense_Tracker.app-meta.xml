@@ -10,6 +10,7 @@
     <label>Expense Tracker</label>
     <navType>Standard</navType>
     <tabs>Expense_Report__c</tabs>
+    <tabs>Category__c</tabs>
     <uiType>Lightning</uiType>
     <utilityBar>Expense_Tracker_UtilityBar</utilityBar>
 </CustomApplication>
