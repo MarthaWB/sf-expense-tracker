@@ -90,7 +90,7 @@ public  with sharing class ExpenseItemTriggerTest {
         items.add(itemUSD50);
 
         Test.startTest();
-          // insert items
+          insert items;
         Test.stopTest();
 
         // select saved items and data to assert into a map for easy fetching by id

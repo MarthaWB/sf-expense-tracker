@@ -7,6 +7,7 @@ List<Expense_Item__c> expenseItems = new List<Expense_Item__c>();
 	            } else {
                  a.Exchange_Rate__c = 0;
               }
+			  expenseItems.add(a);
 	        }
 	      insert expenseItems;
 }
