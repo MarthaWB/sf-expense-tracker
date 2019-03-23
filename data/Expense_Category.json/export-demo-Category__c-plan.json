@@ -1,0 +1,10 @@
+[
+    {
+        "sobject": "Category__c",
+        "saveRefs": true,
+        "resolveRefs": false,
+        "files": [
+            "export-demo-Category__cs.json"
+        ]
+    }
+]

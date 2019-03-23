@@ -1,0 +1,44 @@
+{
+    "records": [
+        {
+            "attributes": {
+                "type": "Category__c",
+                "referenceId": "Category__cRef1"
+            },
+            "Name": "Printing and Reproduction",
+            "Reimbursable_Percentage__c": 100
+        },
+        {
+            "attributes": {
+                "type": "Category__c",
+                "referenceId": "Category__cRef2"
+            },
+            "Name": "Meal while working",
+            "Reimbursable_Percentage__c": 50
+        },
+        {
+            "attributes": {
+                "type": "Category__c",
+                "referenceId": "Category__cRef3"
+            },
+            "Name": "Office Supplies",
+            "Reimbursable_Percentage__c": 100
+        },
+        {
+            "attributes": {
+                "type": "Category__c",
+                "referenceId": "Category__cRef4"
+            },
+            "Name": "Office Furniture",
+            "Reimbursable_Percentage__c": 100
+        },
+        {
+            "attributes": {
+                "type": "Category__c",
+                "referenceId": "Category__cRef5"
+            },
+            "Name": "Professional Business Services",
+            "Reimbursable_Percentage__c": 100
+        }
+    ]
+}
