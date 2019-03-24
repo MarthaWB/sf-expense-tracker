@@ -115,7 +115,7 @@ public  with sharing class ExpenseItemTriggerTest {
         // get itemUSD100 by Id from the map
         // assert exchange rate is 1
         // assert reimbursable amount is 100
-
+        System.assertEquals(1, savedItems.get(itemUSD100.Id).Exchange_Rate__c, 'Assert exchange rate is 1');
         // TODO update test when fx rates are captured
         // get itemJPY50 by Id from the map
         // assert exchange rate is 0
