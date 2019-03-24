@@ -9,26 +9,28 @@ public  with sharing class ExpenseItemTriggerTest {
         FROM User
         WHERE Profile.Name = 'Consultant'
         LIMIT 1
-        ];
+      ];
 
       // assert user exists
-      // System.assert( 1, user.size(), 'Consultant exists');
+      System.assert(user != null, 'Consultant exists');
 
       System.runAs(user) {
         // create a new expense report called expenseReport and insert it
         Expense_Report__c expenseReport =  new Expense_Report__c (
           Name = 'Test Expense Report'
         );
+        insert expenseReport;
+
         // get category with reimbursable percent 1 and store in variable reimbursable100
          Category__c reimbursable100 = [
-            SELECT Id
+            SELECT Id, Reimbursable_Percentage__c
             FROM Category__c
             WHERE Reimbursable_Percentage__c = 100
             LIMIT 1
         ];
         // get category with reimbursable percent .5 and store in variable reimbursable50
         Category__c reimbursable50 = [
-            SELECT Id
+            SELECT Id, Reimbursable_Percentage__c
             FROM Category__c
             WHERE Reimbursable_Percentage__c = 50
             LIMIT 1
@@ -44,50 +46,51 @@ public  with sharing class ExpenseItemTriggerTest {
           // Description__c = 'JPY 100',
           Date__c = System.today() - 1,
           Currency__c = 'JPY',
-          Amount__c = 100
+          Amount__c = 100,
+          Name = 'Ticket'
         );
 
         // add to list
         items.add(itemJPY100);
 
         // instantiate an expense item itemUSD100 with currency USD, category: reimbursable100, amount: 100, date: yesterday
-        Expense_Item__c itemUSD100 = new Expense_Item__c(
-          Expense_Report__c = expenseReport.Id,
-          Category__c = reimbursable100.Id,
-          // Description__c = 'USD 100',
-          Date__c = System.today() - 1,
-          Currency__c = 'USD',
-          Amount__c = 100
-        );
+        // Expense_Item__c itemUSD100 = new Expense_Item__c(
+        //   Expense_Report__c = expenseReport.Id,
+        //   Category__c = reimbursable100.Id,
+        //   // Description__c = 'USD 100',
+        //   Date__c = System.today() - 1,
+        //   Currency__c = 'USD',
+        //   Amount__c = 100
+        // );
 
         // add to list
-        items.add(itemUSD100);
+        // items.add(itemUSD100);
 
         // instantiate an expense item itemJPY50 with currency JPY, category: reimbursable50, amount:100, date: day before yesterday
-        Expense_Item__c itemJPY50 = new Expense_Item__c(
-          Expense_Report__c = expenseReport.Id,
-          Category__c = reimbursable50.Id,
-          // Description__c = 'JPY 50',
-          Date__c = System.today() - 1,
-          Currency__c = 'JPY',
-          Amount__c = 50
-        );
+        // Expense_Item__c itemJPY50 = new Expense_Item__c(
+        //   Expense_Report__c = expenseReport.Id,
+        //   Category__c = reimbursable50.Id,
+        //   // Description__c = 'JPY 50',
+        //   Date__c = System.today() - 1,
+        //   Currency__c = 'JPY',
+        //   Amount__c = 50
+        // );
 
         // add to list
-        items.add(itemJPY50);
+        // items.add(itemJPY50);
 
         // instantiate an expense item itemUSD50 with currency USD, category: reimbursable50, amount: 100, date: day before yesterday
-        Expense_Item__c itemUSD50 = new Expense_Item__c(
-          Expense_Report__c = expenseReport.Id,
-          Category__c = reimbursable50.Id,
-          // Description__c = 'USD 50',
-          Date__c = System.today() - 1,
-          Currency__c = 'USD',
-          Amount__c = 50
-        );
+        // Expense_Item__c itemUSD50 = new Expense_Item__c(
+        //   Expense_Report__c = expenseReport.Id,
+        //   Category__c = reimbursable50.Id,
+        //   // Description__c = 'USD 50',
+        //   Date__c = System.today() - 1,
+        //   Currency__c = 'USD',
+        //   Amount__c = 50
+        // );
 
         // add to list
-        items.add(itemUSD50);
+        // items.add(itemUSD50);
 
         Test.startTest();
           insert items;
@@ -135,13 +138,13 @@ public  with sharing class ExpenseItemTriggerTest {
     static void makeData() {
     List<Category__c> categories = new List<Category__c>();
 
-    categories.add (
+    categories.add(
       new Category__c (
       Name = 'Gasoline',
       Reimbursable_Percentage__c = 100
       )
     );
-    categories.add (
+    categories.add(
       new Category__c (
       Name = 'Meals',
       Reimbursable_Percentage__c = 50
