@@ -1,11 +1,11 @@
 trigger ExpenseItemTrigger on Expense_Item__c (before insert, before update) {
-List<Expense_Item__c> expenseItems = new List<Expense_Item__c>();
-	        for (Expense_Item__c a : Trigger.new) {
-	            if(a.Currency__c == 'USD') {
-	                a.Exchange_Rate__c = 1;
-	            } else {
-                 a.Exchange_Rate__c = 0;
-              }
-			  expenseItems.add(a);
-	        }
+
+	for (Expense_Item__c expenseItem : Trigger.new) {
+		if(expenseItem.Currency__c == 'USD') {
+			expenseItem.Exchange_Rate__c = 1;
+		} else {
+			expenseItem.Exchange_Rate__c = 0;
+		}
+		expenseItem.Reimbursable_Amount__c = expenseItem.Exchange_Rate__c * expenseItem.Amount__c;
+	}
 }
