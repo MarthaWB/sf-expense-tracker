@@ -47,64 +47,67 @@ public  with sharing class ExpenseItemTriggerTest {
           Date__c = System.today() - 1,
           Currency__c = 'JPY',
           Amount__c = 100,
-          Name = 'Ticket'
+          Name = 'taxi'
         );
 
         // add to list
         items.add(itemJPY100);
 
         // instantiate an expense item itemUSD100 with currency USD, category: reimbursable100, amount: 100, date: yesterday
-        // Expense_Item__c itemUSD100 = new Expense_Item__c(
-        //   Expense_Report__c = expenseReport.Id,
-        //   Category__c = reimbursable100.Id,
-        //   // Description__c = 'USD 100',
-        //   Date__c = System.today() - 1,
-        //   Currency__c = 'USD',
-        //   Amount__c = 100
-        // );
+        Expense_Item__c itemUSD100 = new Expense_Item__c(
+          Expense_Report__c = expenseReport.Id,
+          Category__c = reimbursable100.Id,
+          // Description__c = 'USD 100',
+          Date__c = System.today() - 1,
+          Currency__c = 'USD',
+          Amount__c = 100,
+          Name = 'Flowers'
+        );
 
         // add to list
-        // items.add(itemUSD100);
+        items.add(itemUSD100);
 
         // instantiate an expense item itemJPY50 with currency JPY, category: reimbursable50, amount:100, date: day before yesterday
-        // Expense_Item__c itemJPY50 = new Expense_Item__c(
-        //   Expense_Report__c = expenseReport.Id,
-        //   Category__c = reimbursable50.Id,
-        //   // Description__c = 'JPY 50',
-        //   Date__c = System.today() - 1,
-        //   Currency__c = 'JPY',
-        //   Amount__c = 50
-        // );
+        Expense_Item__c itemJPY50 = new Expense_Item__c(
+          Expense_Report__c = expenseReport.Id,
+          Category__c = reimbursable50.Id,
+          // Description__c = 'JPY 50',
+          Date__c = System.today() - 1,
+          Currency__c = 'JPY',
+          Amount__c = 50,
+          Name = 'dinner'
+        );
 
         // add to list
-        // items.add(itemJPY50);
+        items.add(itemJPY50);
 
         // instantiate an expense item itemUSD50 with currency USD, category: reimbursable50, amount: 100, date: day before yesterday
-        // Expense_Item__c itemUSD50 = new Expense_Item__c(
-        //   Expense_Report__c = expenseReport.Id,
-        //   Category__c = reimbursable50.Id,
-        //   // Description__c = 'USD 50',
-        //   Date__c = System.today() - 1,
-        //   Currency__c = 'USD',
-        //   Amount__c = 50
-        // );
+        Expense_Item__c itemUSD50 = new Expense_Item__c(
+          Expense_Report__c = expenseReport.Id,
+          Category__c = reimbursable50.Id,
+          // Description__c = 'USD 50',
+          Date__c = System.today() - 1,
+          Currency__c = 'USD',
+          Amount__c = 50,
+          Name = 'Breakfat'
+        );
 
         // add to list
-        // items.add(itemUSD50);
+        items.add(itemUSD50);
 
         Test.startTest();
           insert items;
         Test.stopTest();
 
         // select saved items and data to assert into a map for easy fetching by id
-        // Map<Id, Expense_Item__c> savedItems = new Map<Id, Expense_Item__c>([
-        //   SELECT Id, Exchange_Rate__c, Reimbursable_Amount__c
-        //   FROM Expense_Item__c
-        // ]);
+        Map<Id, Expense_Item__c> savedItems = new Map<Id, Expense_Item__c>([
+          SELECT Id, Exchange_Rate__c
+          FROM Expense_Item__c
+        ]);
 
         // TODO update test when fx rates are captured
         // get itemJPY100 by Id from the map
-        // System.assertEquals(0, savedItems.get(itemJPY100.Id).Exchange_Rate__c, 'Assert exchange rate is 0');
+        System.assertEquals(0, savedItems.get(itemJPY100.Id).Exchange_Rate__c, 'Assert exchange rate is 0');
 
         // assert exchange rate is 0
         // assert reimbursable amount is 0
