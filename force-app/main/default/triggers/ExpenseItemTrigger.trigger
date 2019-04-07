@@ -6,6 +6,6 @@ trigger ExpenseItemTrigger on Expense_Item__c (before insert, before update) {
 		} else {
 			expenseItem.Exchange_Rate__c = 0;
 		}
-		expenseItem.Reimbursable_Amount__c = expenseItem.Exchange_Rate__c * expenseItem.Amount__c;
+		// expenseItem.Reimbursable_Amount__c = expenseItem.Exchange_Rate__c * expenseItem.Amount__c;
 	}
 }
