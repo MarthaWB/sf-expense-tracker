@@ -1,10 +1,10 @@
 public abstract class TriggerHandler {
-     abstract void beforeInsert();
-     abstract void afterInsert();
-     abstract void beforeUpdate();
-     abstract void afterUpdate();
-     abstract void beforeDelete();
-     abstract void afterDelete();
+    public abstract void beforeInsert();
+    public abstract void afterInsert();
+    public abstract void beforeUpdate();
+    public abstract void afterUpdate();
+    public abstract void beforeDelete();
+    public abstract void afterDelete();
 
     public void execute() {
       if (Trigger.isInsert) {

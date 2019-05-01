@@ -1,22 +1,22 @@
 public class ExpenseItemTriggerHandler extends TriggerHandler {
 
-    void beforeInsert() {
+    public override void beforeInsert() {
         calculateReimbursableAmount(Trigger.new);
     }
 
-    void afterInsert(){}
+    public override void afterInsert(){}
 
-    void beforeUpdate(){
+    public override void beforeUpdate(){
         calculateReimbursableAmount(Trigger.new);
     }
 
-    void afterUpdate(){}
+    public override void afterUpdate(){}
 
-    void beforeDelete(){}
+    public override void beforeDelete(){}
 
-    void afterDelete(){}
+    public override void afterDelete(){}
 
-    void calculateReimbursableAmount(List<Expense_Item__c> ExpenseItemList) {
+    public void calculateReimbursableAmount(List<Expense_Item__c> ExpenseItemList) {
 
         for (Expense_Item__c expenseItem : ExpenseItemList) {
             if(expenseItem.Currency__c == 'USD') {
@@ -40,7 +40,8 @@ public class ExpenseItemTriggerHandler extends TriggerHandler {
 
         for (Expense_Item__c expenseI : ExpenseItemList) {
            Id categoryId = expenseI.Category__c;
-          expenseI.Reimbursable_Amount__c = expenseI.Exchange_Rate__c * expenseI.Amount__c * categories.get(categoryId).Reimbursable_Percentage__c;
-	    }
+          // expenseI.Reimbursable_Amount__c = expenseI.Exchange_Rate__c * expenseI.Amount__c * categories.get(categoryId).Reimbursable_Percentage__c;
+	      expenseI.Reimbursable_Amount__c = expenseI.Exchange_Rate__c * expenseI.Amount__c;
+        }
     }
 }
