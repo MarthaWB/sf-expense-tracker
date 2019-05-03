@@ -40,8 +40,7 @@ public class ExpenseItemTriggerHandler extends TriggerHandler {
 
         for (Expense_Item__c expenseI : ExpenseItemList) {
            Id categoryId = expenseI.Category__c;
-          // expenseI.Reimbursable_Amount__c = expenseI.Exchange_Rate__c * expenseI.Amount__c * categories.get(categoryId).Reimbursable_Percentage__c;
-	      expenseI.Reimbursable_Amount__c = expenseI.Exchange_Rate__c * expenseI.Amount__c;
+          expenseI.Reimbursable_Amount__c = expenseI.Exchange_Rate__c * expenseI.Amount__c * categories.get(categoryId).Reimbursable_Percentage__c / 100;
         }
     }
 }
