@@ -140,10 +140,21 @@ public  with sharing class ExpenseItemTriggerTest {
     @testSetup
     static void makeData() {
     List<Category__c> categories = new List<Category__c>();
-
+      // setup test 2 categories for each test
+      // 100% and 50% reimbursable
+      // practice bulkification
+      // add categories to list
+      // save list
     categories.add(
       new Category__c (
       Name = 'Gasoline',
+      Reimbursable_Percentage__c = 100
+      )
+    );
+
+    categories.add(
+      new Category__c (
+      Name = 'Office supplies',
       Reimbursable_Percentage__c = 100
       )
     );
@@ -154,13 +165,14 @@ public  with sharing class ExpenseItemTriggerTest {
       )
     );
 
-    insert categories;
-      // setup test 2 categories for each test
-      // 100% and 50% reimbursable
-      // practice bulkification
-      // add categories to list
-      // save list
+        categories.add(
+      new Category__c (
+      Name = 'Meeting expenses',
+      Reimbursable_Percentage__c = 50
+      )
+    );
 
+    insert categories;
     }
 }
 

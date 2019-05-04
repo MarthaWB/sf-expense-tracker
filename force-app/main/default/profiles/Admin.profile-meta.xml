@@ -52,6 +52,11 @@
         <field>Expense_Report__c.Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Expense_Report__c.Report_Reimbursable_Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
     <layoutAssignments>
         <layout>Category__c-Category Layout</layout>
     </layoutAssignments>

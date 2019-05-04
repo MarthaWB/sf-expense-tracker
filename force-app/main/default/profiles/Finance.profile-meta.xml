@@ -6,11 +6,19 @@
         <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
+        <apexClass>ExpenseItemTriggerHandler</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ExpenseItemTriggerTest</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <classAccesses>
         <apexClass>ExpenseReportSharingTest</apexClass>
+        <enabled>false</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>TriggerHandler</apexClass>
         <enabled>false</enabled>
     </classAccesses>
     <custom>true</custom>
@@ -30,6 +38,11 @@
         <readable>false</readable>
     </fieldPermissions>
     <fieldPermissions>
+        <editable>false</editable>
+        <field>Expense_Item__c.Exchange_Rate__c</field>
+        <readable>false</readable>
+    </fieldPermissions>
+    <fieldPermissions>
         <editable>true</editable>
         <field>Expense_Item__c.Reimbursable_Amount__c</field>
         <readable>true</readable>
@@ -37,6 +50,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Expense_Report__c.Amount__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>false</editable>
+        <field>Expense_Report__c.Report_Reimbursable_Amount__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <layoutAssignments>
