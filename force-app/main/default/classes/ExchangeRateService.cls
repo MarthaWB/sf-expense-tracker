@@ -3,12 +3,12 @@ public with sharing class ExchangeRateService
 {
     public static final String BASE_RATE = 'USD';
     private List<String> fromCurrencies = new List<String>();
-    private Date converionDate;
+    private Date conversionDate;
     public ExchangeRateService(Date conversionDate, List<String> fromCurrencies) {
       this.fromCurrencies = fromCurrencies;
-      this.converionDate = converionDate;
+      this.conversionDate = conversionDate;
 
-      if(this.converionDate == null || this.fromCurrencies == null) {
+      if(this.conversionDate == null || this.fromCurrencies == null) {
            throw new ExchangeRateServiceException('Missing arguments');
       } 
     }
@@ -16,16 +16,16 @@ public with sharing class ExchangeRateService
       private class ExchangeRateServiceException extends Exception {}
       private class SplashThatApiException extends Exception {}
       public string getFXRates(){
-          String converionDateString;
-          String fromCurrenciesString;
+          String conversionDateString = String.valueOf(conversionDate);
+          String fromCurrenciesString = String.join(this.fromCurrencies, ',');
 
-          String endpoint = 'https//data.fixer.io/api/' + 
-          converionDateString + '?' + 
+          String endpoint = 'https://data.fixer.io/api/' + 
+          conversionDateString + '?' + 
           'access_key='+ 'ebfa68700c1d71df623c3440b373fb65' + '&' + 
           'base=' + 'GBP' + '&' + 
           'symbols=' + fromCurrenciesString;
           HttpRequest req = new HttpRequest();
-          req.setTimeout(1200000); // optional
+          // req.setTimeout(1200000); // optional
           req.setEndpoint(''); // must have
           req.setMethod('GET'); // must have
           Http http = new Http();
