@@ -16,7 +16,7 @@ public with sharing class ExchangeRateService
       private class ExchangeRateServiceException extends Exception {}
       private class SplashThatApiException extends Exception {}
       public string getFXRates(){
-          String conversionDateString = String.valueOf(conversionDate);
+          String conversionDateString = '2019-05-05'; // String.valueOf(conversionDate);
           String fromCurrenciesString = String.join(this.fromCurrencies, ',');
 
           String endpoint = 'https://data.fixer.io/api/' + 
@@ -26,7 +26,7 @@ public with sharing class ExchangeRateService
           'symbols=' + fromCurrenciesString;
           HttpRequest req = new HttpRequest();
           // req.setTimeout(1200000); // optional
-          req.setEndpoint(''); // must have
+          req.setEndpoint(endpoint); // must have
           req.setMethod('GET'); // must have
           Http http = new Http();
           HttpResponse res = http.send(req);
