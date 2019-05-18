@@ -1,6 +1,4 @@
-public with sharing class ExchangeRateService 
-// implements HttpCalloutMock 
-{
+public with sharing class ExchangeRateService  implements HttpCalloutMock {
     public static final String BASE_RATE = 'USD';
     private List<String> fromCurrencies = new List<String>();
     private Date conversionDate;
@@ -16,14 +14,16 @@ public with sharing class ExchangeRateService
       private class ExchangeRateServiceException extends Exception {}
       private class SplashThatApiException extends Exception {}
       public string getFXRates(){
-          String conversionDateString = '2019-05-05'; // String.valueOf(conversionDate);
+          String conversionDateString = String.valueOf(conversionDate);
           String fromCurrenciesString = String.join(this.fromCurrencies, ',');
 
-          String endpoint = 'https://data.fixer.io/api/' + 
-          conversionDateString + '?' + 
-          'access_key='+ 'ebfa68700c1d71df623c3440b373fb65' + '&' + 
-          'base=' + 'GBP' + '&' + 
+          String endpoint = 'https://api.exchangeratesapi.io/' + 
+          conversionDateString + '?' +  
+          'base=' + 'USD' + '&' + 
           'symbols=' + fromCurrenciesString;
+
+          // start_at=2018-01-01&end_at=2018-09-01
+
           HttpRequest req = new HttpRequest();
           // req.setTimeout(1200000); // optional
           req.setEndpoint(endpoint); // must have
@@ -38,6 +38,45 @@ public with sharing class ExchangeRateService
           }
           return responseBody;
       }
+
+      public ExchangeRateResponse serializeJson(){
+        String resp = getFXRates();
+        ExchangeRateResponse fxRate = (ExchangeRateResponse)JSON.deserialize(resp, ExchangeRateResponse.class);
+        return fxRate;
+      }
+
+      public HttpResponse respond(HttpRequest request){
+          // Create a fake response
+          HttpResponse res = new HttpResponse();
+          res.setHeader('Content-Type', 'application/json');
+          res.setBody('{"success":true,"timestamp":1555269846,"historical":true,"base":"EUR","date":"2019-04-14","rates":{"GBP":0.86366,"CAD":1.507216}}');
+          res.setStatusCode(200);
+          return res;
+      }
+
+        public class ExchangeRateResponse {
+            public Boolean success {get; set;}
+            public Boolean historical {get; set;}
+            public Date rateDate {get; set;}
+            public String base {get; set;}
+            Map<String, Decimal> rates {get; set;}
+            
+            List<Exchange_Rate__c> exchangeRates = new List<Exchange_Rate__c>();
+            
+            public List<Exchange_Rate__c> getExchangeRates(){
+                for(String key:rates.keySet()){
+                    
+                    Decimal rate =  rates.get(key);
+                    Exchange_Rate__c exchangeRateItem = new Exchange_Rate__c(
+                        Currency__c = key,
+                        Rate__c = rate,
+                        Rate_date__c = rateDate
+                    );
+                    exchangeRates.add(exchangeRateItem);
+                }
+                return exchangeRates;
+            }
+        }
 }
 
 
