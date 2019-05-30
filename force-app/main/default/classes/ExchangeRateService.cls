@@ -1,4 +1,4 @@
-public with sharing class ExchangeRateService  implements HttpCalloutMock {
+public with sharing class ExchangeRateService {
     public static final String BASE_RATE = 'USD';
     private List<String> fromCurrencies = new List<String>();
     private Date conversionDate;
@@ -39,19 +39,10 @@ public with sharing class ExchangeRateService  implements HttpCalloutMock {
           return responseBody;
       }
 
-      public ExchangeRateResponse serializeJson(){
+      public ExchangeRateResponse deserializeJson(){
         String resp = getFXRates();
         ExchangeRateResponse fxRate = (ExchangeRateResponse)JSON.deserialize(resp, ExchangeRateResponse.class);
         return fxRate;
-      }
-
-      public HttpResponse respond(HttpRequest request){
-          // Create a fake response
-          HttpResponse res = new HttpResponse();
-          res.setHeader('Content-Type', 'application/json');
-          res.setBody('{"success":true,"timestamp":1555269846,"historical":true,"base":"EUR","date":"2019-04-14","rates":{"GBP":0.86366,"CAD":1.507216}}');
-          res.setStatusCode(200);
-          return res;
       }
 
         public class ExchangeRateResponse {
