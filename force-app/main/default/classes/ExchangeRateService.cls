@@ -1,74 +1,76 @@
-public with sharing class ExchangeRateService {
-    public static final String BASE_RATE = 'USD';
+public with sharing class ExchangeRateService implements HttpCalloutMock {
+    
+    
+    // ** fixer.io API **
+    //public static final String API_KEY = '6f05d14852aa1a759d633ef9553e5d6f';
+    public static final String BASE_Rate = 'USD';    
     private List<String> fromCurrencies = new List<String>();
     private Date conversionDate;
+  
     public ExchangeRateService(Date conversionDate, List<String> fromCurrencies) {
-      this.fromCurrencies = fromCurrencies;
-      this.conversionDate = conversionDate;
-
-      if(this.conversionDate == null || this.fromCurrencies == null) {
-           throw new ExchangeRateServiceException('Missing arguments');
-      } 
-    }
-
-      private class ExchangeRateServiceException extends Exception {}
-      private class SplashThatApiException extends Exception {}
-      public string getFXRates(){
-          String conversionDateString = String.valueOf(conversionDate);
-          String fromCurrenciesString = String.join(this.fromCurrencies, ',');
-
-          String endpoint = 'https://api.exchangeratesapi.io/' + 
-          conversionDateString + '?' +  
-          'base=' + 'USD' + '&' + 
-          'symbols=' + fromCurrenciesString;
-
-          // start_at=2018-01-01&end_at=2018-09-01
-
-          HttpRequest req = new HttpRequest();
-          // req.setTimeout(1200000); // optional
-          req.setEndpoint(endpoint); // must have
-          req.setMethod('GET'); // must have
-          Http http = new Http();
-          HttpResponse res = http.send(req);
-          Integer statusCode = res.getStatusCode();
-          String responseBody = res.getBody();
-          
-          if (statusCode != 200){
-              throw new SplashThatApiException(responseBody);
-          }
-          return responseBody;
-      }
-
-      public ExchangeRateResponse deserializeJson(){
-        String resp = getFXRates();
-        ExchangeRateResponse fxRate = (ExchangeRateResponse)JSON.deserialize(resp, ExchangeRateResponse.class);
-        return fxRate;
-      }
-
-        public class ExchangeRateResponse {
-            public Boolean success {get; set;}
-            public Boolean historical {get; set;}
-            public Date rateDate {get; set;}
-            public String base {get; set;}
-            Map<String, Decimal> rates {get; set;}
-            
-            List<Exchange_Rate__c> exchangeRates = new List<Exchange_Rate__c>();
-            
-            public List<Exchange_Rate__c> getExchangeRates(){
-                for(String key:rates.keySet()){
-                    
-                    Decimal rate =  rates.get(key);
-                    Exchange_Rate__c exchangeRateItem = new Exchange_Rate__c(
-                        Currency__c = key,
-                        Rate__c = rate,
-                        Rate_date__c = rateDate
-                    );
-                    exchangeRates.add(exchangeRateItem);
-                }
-                return exchangeRates;
-            }
+        this.conversionDate = conversionDate;
+        this.fromCurrencies = fromCurrencies;
+        if (this.conversionDate == null 
+                    || this.fromCurrencies == null
+                    || this.fromCurrencies.isEmpty()) {
+            throw new ExchangeRateServiceException('Missing required arguments!');
         }
+    }
+    public String getFXRates() {
+        String conversionDateString = String.valueOf(conversionDate);
+        String fromCurrenciesString = String.join(this.fromCurrencies,',');
+        /** fixer.io API **
+        String endpoint = 'http://data.fixer.io/api/' +
+                conversionDateString + '?' +
+                'access_key=' + API_KEY + '&' +
+                'base=' + BASE_Rate +
+                '&symbols=' + fromCurrenciesString;
+        */
+        //** exchangeratesapi.io API **
+        String endpoint = 'https://api.exchangeratesapi.io/' +
+                conversionDateString + '?' +
+                'base=' + BASE_Rate +
+                '&symbols=' + fromCurrenciesString;
+        HttpRequest req = new HttpRequest();
+        req.setEndpoint(endpoint);
+        req.setMethod('GET');
+        Http http = new Http();
+        HTTPResponse res = http.send(req);
+        Integer statusCode = res.getStatusCode();
+        String responseBody = res.getBody();
+        return responseBody;
+    }
+    public ExchangeRateResponse deserializeJson() {
+        // call the getFXRates method to get the JSONstring from response
+        String resp = getFXRates();
+        // take the JSON string response (resp) and deserialize it into an object
+        ExchangeRateResponse fxRate = (ExchangeRateResponse)JSON.deserialize(resp, ExchangeRateResponse.class);
+        fxRate.getExchangeRates();
+        return fxRate; 
+    }
+    public HttpResponse respond(HTTPRequest req) {
+        // Create a fake response
+        HttpResponse res = new HttpResponse();
+        res.setHeader('Content-Type', 'application/json');
+        
+        // exchangeratesapi.io    
+        res.setBody('{"base":"EUR","date":"2019-05-16","rates":{"USD":1.117335}');
+        res.setStatusCode(200);
+        return res;        
+    }
+    private class ExchangeRateServiceException extends Exception {}
+    public class ExchangeRateResponse {
+        public String base {get; set;}
+        public Map<String, Decimal> rates {get; set;}
+        public List<Exchange_Rate__c> getExchangeRates() {
+            List<Exchange_Rate__c> exchangeRateList = new List<Exchange_Rate__c>();
+            for (String key : this.rates.keySet()) {
+                Exchange_Rate__c exchangeRate = new Exchange_Rate__c();
+                exchangeRate.Currency__c =  key;
+                exchangeRate.Rate__c = this.rates.get(key);
+                exchangeRateList.add(exchangeRate);
+            }
+            return exchangeRateList;
+        }       
+    }
 }
-
-
-// {"success":true,"timestamp":1555269846,"historical":true,"base":"EUR","date":"2019-04-14","rates":{"GBP":0.86366,"CAD":1.507216}}
