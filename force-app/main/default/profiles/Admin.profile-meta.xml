@@ -6,6 +6,18 @@
         <visible>true</visible>
     </applicationVisibilities>
     <classAccesses>
+        <apexClass>ExchangeRateService</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ExchangeRateServiceCallOutMock</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
+        <apexClass>ExchangeRateServiceTest</apexClass>
+        <enabled>true</enabled>
+    </classAccesses>
+    <classAccesses>
         <apexClass>ExpenseItemTriggerHandler</apexClass>
         <enabled>true</enabled>
     </classAccesses>
@@ -30,6 +42,11 @@
     <fieldPermissions>
         <editable>true</editable>
         <field>Category__c.Reimbursable_Percentage__c</field>
+        <readable>true</readable>
+    </fieldPermissions>
+    <fieldPermissions>
+        <editable>true</editable>
+        <field>Exchange_Rate__c.Rate_Date__c</field>
         <readable>true</readable>
     </fieldPermissions>
     <fieldPermissions>
@@ -61,6 +78,9 @@
         <layout>Category__c-Category Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
+        <layout>Exchange_Rate__c-Exchange Rate Layout</layout>
+    </layoutAssignments>
+    <layoutAssignments>
         <layout>Expense_Item__c-Expense Item Layout</layout>
     </layoutAssignments>
     <layoutAssignments>
@@ -73,6 +93,15 @@
         <allowRead>true</allowRead>
         <modifyAllRecords>true</modifyAllRecords>
         <object>Category__c</object>
+        <viewAllRecords>true</viewAllRecords>
+    </objectPermissions>
+    <objectPermissions>
+        <allowCreate>true</allowCreate>
+        <allowDelete>true</allowDelete>
+        <allowEdit>true</allowEdit>
+        <allowRead>true</allowRead>
+        <modifyAllRecords>true</modifyAllRecords>
+        <object>Exchange_Rate__c</object>
         <viewAllRecords>true</viewAllRecords>
     </objectPermissions>
     <objectPermissions>
@@ -95,6 +124,10 @@
     </objectPermissions>
     <tabVisibilities>
         <tab>Category__c</tab>
+        <visibility>DefaultOn</visibility>
+    </tabVisibilities>
+    <tabVisibilities>
+        <tab>Exchange_Rate__c</tab>
         <visibility>DefaultOn</visibility>
     </tabVisibilities>
     <tabVisibilities>
