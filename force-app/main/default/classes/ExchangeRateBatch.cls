@@ -1,4 +1,3 @@
-
 public class ExchangeRateBatch implements Database.Batchable<sObject>, Database.AllowsCallouts {
     
 // "Create a method in ExchangeRateBatch to populateExchangeRates. The method will:
@@ -32,7 +31,6 @@ public class ExchangeRateBatch implements Database.Batchable<sObject>, Database.
 
             if(expenseItemsMap.get(expenseItem.Date__c)!= null){     
                 currenciesSetForDate = expenseItemsMap.get(expenseItem.Date__c);
-
             }
                 currenciesSetForDate.add(expenseItem.Currency__c);
                 expenseItemsMap.put(expenseItem.Date__c, currenciesSetForDate);
@@ -42,7 +40,7 @@ public class ExchangeRateBatch implements Database.Batchable<sObject>, Database.
         //output a map with joined date_and_currency as key and exchange rate as value
         Map<String, Exchange_Rate__c> exchangeRateByDateAndCurrency = new Map<String, Exchange_Rate__c>();
 
-        List<Exchange_Rate__c>FXRatesList = new List<Exchange_Rate__c>([SELECT id from Exchange_Rate__c]);
+        List<Exchange_Rate__c>FXRatesList;
 
         // callout for missing date and currency
         for (Date rateDate : expenseItemsMap.keySet()){
@@ -50,20 +48,17 @@ public class ExchangeRateBatch implements Database.Batchable<sObject>, Database.
             ExchangeRateService exchangeRateService = new ExchangeRateService(rateDate, currenciesToGet);
             FXRatesList = exchangeRateService.getFXRates();
 
-
-        // for (Exchange_Rate__c exchangeRateObject: FXRatesList){
-        //     if (rateDate == exchangRateObject.Rate_Date__c && currenciesToGet.contains(exchangeRateObject.Currency__c) ){
-        //         String exchangeRateKey = rateDate + ':' + exchangeRateObject.Currency__c;
-        //         exchangeRateByDateAndCurrency.put(exchangeRateKey, exchangRateObject);
-        //     }
-        // }
+        for (Exchange_Rate__c exchangeRateObject: FXRatesList){
+            if (rateDate == exchangeRateObject.Rate_Date__c && currenciesToGet.contains(exchangeRateObject.Currency__c) ){
+                String exchangeRateKey = rateDate + ':' + exchangeRateObject.Currency__c;
+                exchangeRateByDateAndCurrency.put(exchangeRateKey, exchangeRateObject);
+            }
+        }
       }
 
         for (Expense_Item__c expenseItem: expenseItems) {
             String exchangeRateKey = expenseItem.Date__c + ':' + expenseItem.Currency__c; 
-            Boolean exchangeRateExists = exchangeRateByDateAndCurrency.get(exchangeRateKey);
-            //Check if expense Item exists?
-
+            Boolean exchangeRateExists = exchangeRateByDateAndCurrency.get(exchangeRateKey) != null;
             if(exchangeRateExists){
                 expenseItem.Exchange_Rate__c = 1 / exchangeRateByDateAndCurrency.get(exchangeRateKey).Rate__c;
             }
@@ -71,7 +66,7 @@ public class ExchangeRateBatch implements Database.Batchable<sObject>, Database.
     
         update expenseItems;
 
-        if(FXRatesList.size()){
+        if(FXRatesList.size() > 0){
             upsert FXRatesList;
         }
         return exchangeRateByDateAndCurrency;
@@ -87,3 +82,4 @@ public class ExchangeRateBatch implements Database.Batchable<sObject>, Database.
             System.debug('>>>> finish ' + job.Status);
         }
     }
+

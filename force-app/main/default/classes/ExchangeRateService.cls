@@ -16,7 +16,7 @@ public with sharing class ExchangeRateService implements HttpCalloutMock {
             throw new ExchangeRateServiceException('Missing required arguments!');
         }
     }
-    public String getFXRates() {
+    public List<Exchange_Rate__c> getFXRates() {
         String conversionDateString = String.valueOf(conversionDate);
         String fromCurrenciesString = String.join(this.fromCurrencies,',');
         /** fixer.io API **
@@ -38,16 +38,11 @@ public with sharing class ExchangeRateService implements HttpCalloutMock {
         HTTPResponse res = http.send(req);
         Integer statusCode = res.getStatusCode();
         String responseBody = res.getBody();
-        return responseBody;
+        
+        ExchangeRateResponse exchangeRateResponse = (ExchangeRateResponse)JSON.deserialize(responseBody, ExchangeRateResponse.class);
+        return exchangeRateResponse.getExchangeRates();
     }
-    public ExchangeRateResponse deserializeJson() {
-        // call the getFXRates method to get the JSONstring from response
-        String resp = getFXRates();
-        // take the JSON string response (resp) and deserialize it into an object
-        ExchangeRateResponse fxRate = (ExchangeRateResponse)JSON.deserialize(resp, ExchangeRateResponse.class);
-        fxRate.getExchangeRates();
-        return fxRate; 
-    }
+
     public HttpResponse respond(HTTPRequest req) {
         // Create a fake response
         HttpResponse res = new HttpResponse();
@@ -58,7 +53,9 @@ public with sharing class ExchangeRateService implements HttpCalloutMock {
         res.setStatusCode(200);
         return res;        
     }
+    
     private class ExchangeRateServiceException extends Exception {}
+    
     public class ExchangeRateResponse {
         public String base {get; set;}
         public Map<String, Decimal> rates {get; set;}
